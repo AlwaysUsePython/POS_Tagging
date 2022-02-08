@@ -54,7 +54,7 @@ optional arguments:
 ```
 #### With Training data 
 ```
-python hmm_learn.py -i corpus/train_tagged.txt -m ./train_model/custom_pos_model.h5 -v
+$ python hmm_learn.py -i corpus/train_tagged.txt -m ./train_model/custom_pos_model.h5 -v
 
 ```
 #### Without Training data (Using Default NLTK Brown corpus as training data)

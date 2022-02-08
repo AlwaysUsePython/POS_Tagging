@@ -1,4 +1,3 @@
-from configparser import RawConfigParser
 from argparse import ArgumentParser
 from tqdm import tqdm
 import pandas as pd
@@ -105,17 +104,17 @@ class HMM_Client:
         self.pos_tags.append('END')
     
     def print_results(self):
-        print("********Output********")
+        print("")
         for ele in self.results:
             print(ele)
 
 def get_args():
     parser = ArgumentParser()
-    parser.add_argument('sentences', help='Sentence/Test file path contaning list of input sentences (Each at newline)')
+    parser.add_argument('sentences', help='Sentence OR Test file path contaning list of input sentences (Each at newline)')
     parser.add_argument('-o', '--output', default="./test.txt", help='Test Output file')
     parser.add_argument('-f', '--from_file', action='store_true',
             help='Read Input Sentences to train from a file') 
-    parser.add_argument("-m", "--model", default="./train_model/model.h5", help="Model file path ")
+    parser.add_argument("-m", "--model", default="./model.h5", help="Model file path ")
     parser.add_argument("-v", "--verbose", help="increase output verbosity",
                     action="store_true")
    
@@ -140,8 +139,6 @@ def main():
     if hmm.check_model_exists():
         hmm.read_model()
         hmm.apply_hmm_viterbi()
-    
-    if args.verbose:
         hmm.print_results()
 
 if __name__ == '__main__':

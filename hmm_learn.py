@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import nltk
 import os
 from nltk.corpus import brown as corpus
@@ -62,17 +63,15 @@ class HMMLearn:
         return True if self.training_file else False
 
     def _convert_tuples(self):
-        sentences = []
-        with open(self.training_file, "r") as tfile:
-            sentence_ls = []
+        with open(self.training_file, "r") as tfile:        
             for line in tfile:
                 line = line.strip(" \n")
+                sentence_ls = []
                 for word_tag in line.split(" "):
-                    word,tag = word_tag.split("/")
+                    word,tag = word_tag.rsplit("/", 1)
                     sentence_ls.append((word, tag))
-                sentences.append(sentence_ls)
-        return sentences
-
+                yield sentence_ls
+    
     def load_data(self):
         self.logger.info("Loading Train Data....")
         if self._is_training_file_present():
@@ -97,7 +96,7 @@ class HMMLearn:
             transition_prob_df = self._eval_transition_probabilities()
             emission_prob_df = self._eval_emission_probabilities()
 
-            save_path = os.path.join(self.model_dump_path, "model.h5")
+            save_path = self.model_dump_path
             hdf = pd.HDFStore(save_path)
             hdf.put("transition_prob_df", transition_prob_df, data_columns=True)
             hdf.put("emission_prob_df", emission_prob_df, data_columns=True)
@@ -109,9 +108,9 @@ class HMMLearn:
 
 def get_args():
     parser = ArgumentParser(description='Train model for Parts of Speech Tagging.')
-    parser.add_argument('-it', '--input_file', help='Input Train file. If not provided nltk brown corpus used for training.')
-    parser.add_argument('-od', '--output_dir', default="./train_model/", help='Path of models output dir') 
-    parser.add_argument("-v", "--verbose", help="increase output verbosity",
+    parser.add_argument('-i', '--input_file', help='Input Train file. (Default: NLTK Brown Corpus)')
+    parser.add_argument('-m', '--model_output_file', default="./model.h5", help='Model file Path to save model') 
+    parser.add_argument("-v", "--verbose", help="increase output verbosity (Set Log Level: INFO)",
                     action="store_true")
     return parser.parse_args()
 
@@ -123,9 +122,9 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.INFO)
 
     training_filepath = args.input_file
-    model_dump_dirpath = args.output_dir
-    print(model_dump_dirpath)
-    hmm_learn = HMMLearn(training_filepath, model_dump_dirpath)
+    model_output_file = args.model_output_file
+    
+    hmm_learn = HMMLearn(training_filepath, model_output_file)
     hmm_learn.load_data()
     hmm_learn.learn_training_probabilities()   
 

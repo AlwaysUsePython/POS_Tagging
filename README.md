@@ -94,7 +94,7 @@ optional arguments:
 
 ```
 
-#### Test file
+#### Input: Test file 
 
 ```
 $ python hmm.py data/test_sents.txt -f -o test_op.txt  -m train_model/custom_pos_model.h5 -v
@@ -117,6 +117,21 @@ James/NNP is/VBZ expected/VBN to/TO race/VB tomorrow/NN ./.
 ```
 
 ### Evaluate Model
+
+```
+$ python evaluate.py -h
+usage: evaluate.py [-h] -t TEST_OUTPUT -c CORRECT_OUTPUT
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TEST_OUTPUT, --test_output TEST_OUTPUT
+                        Test Output file contains tagged sentences generated
+                        by Model
+  -c CORRECT_OUTPUT, --correct_output CORRECT_OUTPUT
+                        Test Output file contains correct tagged sentence
+
+```
+
 
 
 # References 

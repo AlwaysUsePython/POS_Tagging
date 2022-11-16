@@ -107,6 +107,8 @@ class HMM_Client:
         print("")
         for ele in self.results:
             print(ele)
+    
+        return "Hello"
 
 def get_args():
     parser = ArgumentParser()
@@ -117,7 +119,7 @@ def get_args():
     parser.add_argument("-m", "--model", default="./model.h5", help="Model file path ")
     parser.add_argument("-v", "--verbose", help="increase output verbosity",
                     action="store_true")
-   
+
     return parser.parse_args()
 
 def main():
@@ -140,6 +142,7 @@ def main():
         hmm.read_model()
         hmm.apply_hmm_viterbi()
         hmm.print_results()
+        
 
 if __name__ == '__main__':
     main()
